@@ -14,7 +14,7 @@ class CdnMapperSpec extends UnitSpec{
 
     def "test that mappers are configured correctly"(){
         setup:
-            def resource = [ linkUrl : 'images.jpg' ]
+            def resource = [ linkUrl : '/images.jpg' ]
             def config = [ enabled: true, url: 'http://www.google.com/' ]
         when:
             mapper.map( resource, config )
@@ -24,7 +24,7 @@ class CdnMapperSpec extends UnitSpec{
 
     def "when mappers are disabled, links are not processed"(){
         setup:
-            def resource = [ linkUrl : 'images.jpg' ]
+            def resource = [ linkUrl : '/images.jpg' ]
             def config = [ enabled: false, url: 'http://www.google.com/' ]
         when:
             mapper.map( resource, config )
@@ -34,7 +34,7 @@ class CdnMapperSpec extends UnitSpec{
 
     def "a resource can set a unique url based on module name"(){
         setup:
-            def resource = [ linkUrl : 'images.jpg', module: [ name: 'uno'] ]
+            def resource = [ linkUrl : '/images.jpg', module: [ name: 'uno'] ]
             def config = [ enabled: true, url:'http://www.google.com/', moduleUrls : [ uno: 'http://uno.com/' ] ]
         when:
             mapper.map( resource, config )
@@ -44,8 +44,18 @@ class CdnMapperSpec extends UnitSpec{
 
     def "a resource with no modules default to base url"(){
         setup:
-            def resource = [ linkUrl : 'images.jpg', module: [ name: 'uno'] ]
+            def resource = [ linkUrl : '/images.jpg', module: [ name: 'uno'] ]
             def config = [ enabled: true, url:'http://www.google.com/', moduleUrls : [ dos: 'http://dos.com/' ] ]
+        when:
+            mapper.map( resource, config )
+        then:
+            resource.linkOverride == 'http://www.google.com/images.jpg'
+    }
+
+    def "a resource already mapped cannot be mapped again"(){
+        setup:
+            def resource = [ linkUrl : '/images.jpg', linkOverride : "http://www.google.com/images.jpg"]
+            def config = [ enabled: true, url: 'http://www.google.com/' ]
         when:
             mapper.map( resource, config )
         then:

@@ -11,7 +11,7 @@ class CdnResourceMapper {
 
     def map(resource, config) {
 
-        def mergedConfig = config + grailsApplication.config.grails.resources.cdn
+        def mergedConfig = config + (grailsApplication?.config?.grails?.resources?.cdn ? grailsApplication.config.grails.resources.cdn : [])
 
         if( mergedConfig.enabled ){
 
@@ -25,7 +25,8 @@ class CdnResourceMapper {
 				url = mergedConfig.url
 			}
 
-			if( url ){
+            if( url && !resource.linkOverride?.startsWith( url ) ){
+//                if( url && !resource.linkOverride?.startWith(url)){
 				if( url.endsWith('/') ){
 					url = url[0..-2]
 				}
