@@ -9,24 +9,76 @@ This plugin allows you to use a content delivery network ( like Amazon CloudFron
 
 ## INSTALLATION
 
-In your application directory, call
+Define dependency in your _BuildConfig.groovy_:
 
-	$ grails install-plugin cdn-resources
-	
-You would need to add the following parameters to your config.groovy file
+```
+compile ':cdn-resources:0.2.1'
+```
 
-	$ grails.resources.cdn.enabled = true
-	$ grails.resources.cdn.url = "http://static.mydomain.com/"
+Or, in your application directory, call
+
+```bash
+grails install-plugin cdn-resources
+```
+
+You would need to add the following parameters to your _Config.groovy_ .
+
+```
+grails.resources.mappers.cdn.enabled = true
+// Default CDN URL
+grails.resources.mappers.cdn.url = "http://static.mydomain.com/"
+```
 
 ## SPECIFYING URLS PER MODULES
 
 You can also define a separate CDN location per module ( for files being hosted by Google, for example ).
 
-The syntax for this is
+```
+// Specific module URLs
+grails.resources.cdn.moduleUrls = [ 'google' : 'http://www.google.com/apis', 'core' : 'http://subdomain.mysite.com' ]
+```
 
-	$ grails.resources.cdn.moduleUrls = [ 'google' : 'http://www.google.com/apis', 'core' : 'http://subdomain.mysite.com' ]
+## SPECIFYING A SHARED URL FOR PLUGINS
 
-If you set up your Content Delivery Network correctly, all your resource files will be served from the CDN from now on. 
+By default, plugins resources will be looked up with default CDN url and the following pattern "{grails.resources.cdn.url}/plugins/{pluginName}-{pluginVersion}/").
+
+If you want to share plugins resources between different apps, you can define _pluginsUrl_ in your config  :
+
+```
+// Default CDN URL based on app name and app version
+grails.resources.mappers.cdn.url = "http://static.mydomain.com/apps/${appName}-${appVersion}"
+// Share plugins CDN URL
+grails.resources.mappers.cdn.pluginsUrl = "http://static.mydomain.com/
+```
+
+## INCLUDING/EXCLUDING RESOURCES PER URIS
+
+You can include/exclude specific resources URIs.
+
+For example, to only include images except PNGs:
+
+```
+grails.resources.mappers.cdn.includes = [ '/images/**' ]
+grails.resources.mappers.cdn.excludes = [ '**/*.png' ]
+```
+
+## INCLUDING/EXCLUDING RESOURCES PER IDS
+
+You can also exclude specific resources IDs.
+
+For example, to exclude bundled resources:
+
+```
+// Regex or Pattern list of IDs to exclude
+grails.resources.mappers.cdn.excludeIds = [ 'bundle-*' ]
+```
+
+For example, to only include Twitter Bootstrap resources:
+
+```
+// Regex or Pattern list of IDs to include
+grails.resources.mappers.cdn.includeIds = [ 'bootstrap-*' ] // Regex or Pattern list
+```
 	
 ## SETTING UP AMAZON CLOUDFRONT CDN SUPPORT
 
@@ -56,4 +108,6 @@ The following section describes how to do so on Amazon CloudFront. You would nee
 
 You will see an url of the form jlsadf423kl24hlf.cloudfront.net. This will be the value that you enter in the grails.resources.cdn.url value in Config.groovy.
 
-	$ grails.resources.cdn.url = "http://jlsadf423kl24hlf.cloudfront.net"
+```
+grails.resources.mappers.cdn.url = "http://jlsadf423kl24hlf.cloudfront.net"
+```
