@@ -1,21 +1,26 @@
-grails.project.class.dir = "target/classes"
-grails.project.test.class.dir = "target/test-classes"
-grails.project.test.reports.dir = "target/test-reports"
-//grails.project.war.file = "target/${appName}-${appVersion}.war"
+grails.project.work.dir = 'target'
+grails.project.source.level = 1.6
+
 grails.project.dependency.resolution = {
-    // inherit Grails' default dependencies
-    inherits("global") {
-        // uncomment to disable ehcache
-        // excludes 'ehcache'
-    }
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    inherits 'global'
+    log 'warn'
     repositories {
-        grailsPlugins()
-        grailsHome()
         grailsCentral()
         mavenLocal()
         mavenCentral()
     }
     dependencies {
+        compile('org.codehaus.groovy.modules.http-builder:http-builder:0.6') {
+            excludes "commons-logging", "xml-apis", "groovy"
+        }
+    }
+    plugins {
+        build(':release:2.1.0', ':rest-client-builder:1.0.2') {
+            export = false
+        }
+        runtime ':resources:1.2.RC2'
+        test(':spock:0.7') {
+            export = false
+        }
     }
 }

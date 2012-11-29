@@ -8,7 +8,6 @@ class CdnResourcesGrailsPlugin {
   def dependsOn = [resources:'1.0 > *']
   def loadAfter = ['resources']
 
-
   // resources that are excluded from plugin packaging
   def pluginExcludes = [
           "grails-app/views/error.gsp",
@@ -17,31 +16,14 @@ class CdnResourcesGrailsPlugin {
           "docs/*.*"
   ]
 
-  // TODO Fill in these fields
   def author = "Tomas Lin"
   def authorEmail = "tomaslin@gmail.com"
   def title = "Cdn Resources Plugin"
   def description = '''\\
 Loads static resources using Content Delivery Networks using the Resources plugin framework
 '''
-  // URL to the plugin's documentation
-  def documentation = "https://github.com/tomaslin/grails-cdn-resources"
   def license ='APACHE'
-  def doWithWebDescriptor = { xml ->
-  }
-
-  def doWithSpring = {
-  }
-
-  def doWithDynamicMethods = { ctx ->
-  }
-
-  def doWithApplicationContext = { applicationContext ->
-  }
-
-  def onChange = { event ->
-  }
-
-  def onConfigChange = { event ->
-  }
+  def documentation = "https://github.com/tomaslin/grails-cdn-resources"
+  def issueManagement = [ system: "github", url: "https://github.com/tomaslin/grails-cdn-resources/issues" ]
+  def scm = [  url: "https://github.com/tomaslin/grails-cdn-resources" ]
 }
