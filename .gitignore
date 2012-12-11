@@ -18,3 +18,4 @@
 *.iml
 /out
 /.idea/vcs.xml
+*.sha1
