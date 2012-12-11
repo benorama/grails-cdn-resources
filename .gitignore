@@ -2,6 +2,7 @@
 /web-app/WEB-INF
 /target
 /target-eclipse
+/plugin.xml
 
 # IDE files
 .classpath
@@ -16,5 +17,4 @@
 *.zip
 *.iml
 /out
-plugin.xml
 /.idea/vcs.xml
