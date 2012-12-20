@@ -19,7 +19,7 @@ class CdnResourcesGrailsPlugin {
   def author = "Tomas Lin"
   def authorEmail = "tomaslin@gmail.com"
   def title = "Cdn Resources Plugin"
-  def description = '''\\
+  def description = '''
 Loads static resources using Content Delivery Networks using the Resources plugin framework
 '''
   def license ='APACHE'

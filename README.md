@@ -38,17 +38,27 @@ You can also define a separate CDN location per module ( for files being hosted 
 grails.resources.cdn.moduleUrls = [ 'google' : 'http://www.google.com/apis', 'core' : 'http://subdomain.mysite.com' ]
 ```
 
-## SPECIFYING A SHARED URL FOR PLUGINS
+## SPECIFYING A PREFIX
 
-By default, plugins resources will be looked up with default CDN url and the following pattern "{grails.resources.cdn.url}/plugins/{pluginName}-{pluginVersion}/").
+In order to handle automatic cache invalidation, it is recommended to include a versioning system in your CDN URLs.
 
-If you want to share plugins resources between different apps, you can define _pluginsUrl_ in your config  :
+You can use the _prefix_ config parameters to include your app name and version.
 
 ```
-// Default CDN URL based on app name and app version
-grails.resources.mappers.cdn.url = "http://static.mydomain.com/apps/${appName}-${appVersion}"
-// Share plugins CDN URL
-grails.resources.mappers.cdn.pluginsUrl = "http://static.mydomain.com/
+// To deploy all the apps at the bucket root in a apps directory
+grails.resources.mappers.cdn.prefix = "apps/${appName}-${appVersion}/"
+```
+
+
+## SPECIFYING A PLUGIN PREFIX TO SHARE PLUGINS RESOURCES BETWEEN APPS
+
+By default, plugins resources will be looked up with the following pattern "{url}${prefix}plugins/{pluginName}-{pluginVersion}/".
+
+If you want to share plugins resources between different apps, you can define _pluginsPrefix_ in your config in order to override app _prefix_ and look up resources with the following pattern "{url}${pluginPefix}{pluginName}-{pluginVersion}/".
+
+```
+// To deploy all plugins at the bucket root in a plugins directory
+grails.resources.mappers.cdn.pluginsPrefix = 'plugins/'
 ```
 
 ## INCLUDING/EXCLUDING RESOURCES PER URIS
@@ -80,7 +90,7 @@ For example, to only include Twitter Bootstrap resources:
 grails.resources.mappers.cdn.includeIds = [ 'bootstrap-*' ] // Regex or Pattern list
 ```
 	
-## SETTING UP AMAZON CLOUDFRONT CDN SUPPORT
+## SETTING UP AMAZON CLOUDFRONT CDN
 
 Before you can use this plugin, you need to set up a content delivery network to dispatch your resources. 
 

@@ -34,16 +34,16 @@ class CdnResourceMapper {
             }
 
 			def url
-
 			if (resource.module?.name && config.moduleUrls && config.moduleUrls[resource.module.name]){
 				url = config.moduleUrls[ resource.module.name ]
 			}
-
 			if (!url){
-                if (resource.linkUrl.startsWith('/plugins') && config.pluginsUrl) {
-                    url = config.pluginsUrl
-                } else {
-                    url = config.url
+                url = config.url
+                if (!url.endsWith('/')) url = "$url/"
+                if (resource.linkUrl.startsWith('/plugins') && config.pluginsPrefix) {
+                    url = "$url${config.pluginsPrefix.startsWith('/') ? config.pluginsPrefix.replaceFirst('/', '') : config.pluginsPrefix}"
+                } else if (config.prefix) {
+                    url = "$url${config.prefix.startsWith('/') ? config.prefix.replaceFirst('/', '') : config.prefix}"
                 }
 			}
 
@@ -57,7 +57,6 @@ class CdnResourceMapper {
                 }
             }
 		}
-
     }
 
 }
