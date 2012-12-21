@@ -33,19 +33,22 @@ class CdnResourceMapper {
                 }
             }
 
-			def url
-			if (resource.module?.name && config.moduleUrls && config.moduleUrls[resource.module.name]){
-				url = config.moduleUrls[ resource.module.name ]
-			}
-			if (!url){
+            def url
+            if (resource.module?.name && config.moduleUrls && config.moduleUrls[resource.module.name]){
+                url = config.moduleUrls[ resource.module.name ]
+            }
+            if (!url){
                 url = config.url
                 if (!url.endsWith('/')) url = "$url/"
                 if (resource.linkUrl.startsWith('/plugins') && config.pluginsPrefix) {
-                    url = "$url${config.pluginsPrefix.startsWith('/') ? config.pluginsPrefix.replaceFirst('/', '') : config.pluginsPrefix}"
+                    String pluginsPrefix = config.pluginsPrefix.startsWith('/') ? config.pluginsPrefix.replaceFirst('/', '') : config.pluginsPrefix
+                    pluginsPrefix = pluginsPrefix.replaceFirst('plugins', '').replaceFirst('//', '/')
+                    url = "$url$pluginsPrefix"
                 } else if (config.prefix) {
-                    url = "$url${config.prefix.startsWith('/') ? config.prefix.replaceFirst('/', '') : config.prefix}"
+                    String prefix = config.prefix.startsWith('/') ? config.prefix.replaceFirst('/', '') : config.prefix
+                    url = "$url$prefix"
                 }
-			}
+            }
 
             if (url) {
                 if (url.endsWith('/')) {
@@ -56,7 +59,7 @@ class CdnResourceMapper {
                     log.debug "CDN link override ${resource.linkOverride}"
                 }
             }
-		}
+        }
     }
 
 }
